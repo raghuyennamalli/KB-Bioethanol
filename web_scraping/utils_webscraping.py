@@ -45,7 +45,7 @@ def get_data_from_ncbi(str_term=None,str_db_name=None,int_retmax=9900,str_output
         print("Error encountered while searching in NCBI: {}".format(str(e)))
         return False
     # parse response using beautifulsoup and get values
-    bs_esearch_response = BeautifulSoup(bs_esearch_response)
+    bs_esearch_response = BeautifulSoup(bs_esearch_response,"lxml")
     str_webenv = bs_esearch_response.find("webenv").get_text()
     str_querykey = bs_esearch_response.find("querykey").get_text()
     int_count = int(bs_esearch_response.find("count").get_text())
@@ -58,7 +58,7 @@ def get_data_from_ncbi(str_term=None,str_db_name=None,int_retmax=9900,str_output
             # get data
             with urllib.request.urlopen(str_fetch_url) as response:
                 bs_efetch_response = response.read()
-            bs_efetch_response = BeautifulSoup(bs_efetch_response)
+            bs_efetch_response = BeautifulSoup(bs_efetch_response,"lxml")
             # write output data to xml file batch-wise
             str_filepath = os.path.join(str_output_path,"batch_{}.xml".format(counter))
             with open(str_filepath,"w") as f:
