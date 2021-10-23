@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 # reading config file
 config = configparser.ConfigParser()
-config.read('../config.ini')
+config.read('config.ini')
 # 
 def get_time(function_name): 
     def inner1(*args, **kwargs): 
