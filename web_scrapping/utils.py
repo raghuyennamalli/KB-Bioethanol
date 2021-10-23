@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 # reading config file
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('../config.ini')
 # 
 def get_time(function_name): 
     def inner1(*args, **kwargs): 
@@ -52,7 +52,7 @@ def get_data_from_ncbi(str_term=None,str_db_name=None,int_retmax=9900,str_output
     int_retstart = int(bs_esearch_response.find("retstart").get_text())
     print("Total number of hits for the term {} is: {}".format(str_term,int_count))
     # iterate till int_count and fetch data in batches using retmax
-    for counter,i in tqdm(enumerate(range(int_retstart,int_count,int_retmax))):
+    for counter,i in (enumerate(range(int_retstart,int_count,int_retmax))):
         str_fetch_url = str_ncbi_baseurl+"efetch.fcgi?db={}&WebEnv={}&query_key={}&retstart={}&retmax={}&retmode={}&api_key={}".format(str_db_name,str_webenv,str_querykey,i,int_retmax,"xml",str_ncbi_apikey)
         try:
             # get data
