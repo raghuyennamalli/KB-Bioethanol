@@ -35,7 +35,7 @@ def get_data_from_ncbi(str_term=None,str_db_name=None,int_retmax=9900,str_output
         print("Input parameters were not passed as expected by the function. Function will exit !")
         return False
     # format term query: replace spaces with "+"; convert string to lowercase
-    str_term = str_term.replace(" ","+").lower()
+    str_term = str_term.replace(" ","+").lower().replace("+and+","+AND+").replace("+or+","+OR+").replace("+not+","+NOT+")
     # form esearch url using base url and query
     str_esearch_url = str_ncbi_baseurl+"esearch.fcgi?db={}&term={}&retmax={}&usehistory=y&api_key={}".format(str_db_name,str_term,int_retmax,str_ncbi_apikey)
     # get response of esearch url
