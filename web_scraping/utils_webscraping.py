@@ -52,6 +52,7 @@ def get_data_from_ncbi(str_term=None,str_db_name=None,int_retmax=9900,str_output
     int_count = int(bs_esearch_response.find("count").get_text())
     if int_count > 0:
         os.makedirs(str_output_path, exist_ok=True)
+    else:
         return True
     int_retstart = int(bs_esearch_response.find("retstart").get_text())
     print("Total number of hits for the term {} is: {}".format(str_term,int_count))
