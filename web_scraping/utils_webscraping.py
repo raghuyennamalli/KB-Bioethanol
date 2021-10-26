@@ -46,16 +46,20 @@ def get_data_from_ncbi(str_term=None,str_db_name=None,int_retmax=9900,str_output
         print("Error encountered while searching in NCBI: {}".format(str(e)))
         return False
     # parse response using beautifulsoup and get values
-    bs_esearch_response = BeautifulSoup(bs_esearch_response,"lxml")
-    str_webenv = bs_esearch_response.find("webenv").get_text()
-    str_querykey = bs_esearch_response.find("querykey").get_text()
-    int_count = int(bs_esearch_response.find("count").get_text())
-    if int_count > 0:
-        os.makedirs(str_output_path, exist_ok=True)
-    else:
-        return True
-    int_retstart = int(bs_esearch_response.find("retstart").get_text())
-    print("Total number of hits for the term {} is: {}".format(str_term,int_count))
+    try:
+        bs_esearch_response = BeautifulSoup(bs_esearch_response,"lxml")
+        str_webenv = bs_esearch_response.find("webenv").get_text()
+        str_querykey = bs_esearch_response.find("querykey").get_text()
+        int_count = int(bs_esearch_response.find("count").get_text())
+        int_retstart = int(bs_esearch_response.find("retstart").get_text())
+        print("Total number of hits for the term {} is: {}".format(str_term,int_count))
+        if int_count > 0:
+            os.makedirs(str_output_path, exist_ok=True)
+        else:
+            return True
+    except Exception as e:
+        print("Error encountered during fetching webenv or querykey: {}".format(str(e)))
+        return False
     # iterate till int_count and fetch data in batches using retmax
     for counter,i in (enumerate(range(int_retstart,int_count,int_retmax))):
         str_fetch_url = str_ncbi_baseurl+"efetch.fcgi?db={}&WebEnv={}&query_key={}&retstart={}&retmax={}&retmode={}&api_key={}".format(str_db_name,str_webenv,str_querykey,i,int_retmax,"xml",str_ncbi_apikey)
