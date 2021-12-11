@@ -1,1 +1,1 @@
-These scripts implement the Co-expression analysis pipeline and are written in python
+These scripts implement the Co-expression analysis pipeline and are written in python and R languages.
